@@ -42,22 +42,8 @@ async function renderBookListPlusFetch(innerHTML) {
     if (innerHTML.toLowerCase().indexOf(book.author.toLowerCase()) >= 0){
       let html;
         html = BookInfo(book);
-        root.insertAdjacentHTML("afterend", html);
+        const bookInfoPlacement = document.querySelector('.book-list');
+        bookInfoPlacement.insertAdjacentHTML("afterbegin", html);
         }
     }
 }
-/* function hoverRemoveElement()
-{
-const existingElementBookDetails = document.getElementById('bookDetail');
-
-try {root.removeChild(existingElementBookDetails);}
- catch {}
-
-}  */
-
-
-/* function hoverRemoveElement() {
-    let box = document.getElementById("bookDetail");
-    console.log(box);
-    box.remove();
-} */
