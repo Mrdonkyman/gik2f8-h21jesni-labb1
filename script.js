@@ -15,32 +15,45 @@ async function searchBooks(searchTerm) {
 };
 function renderBookList(bookList) {
     BookList(bookList);
-    const existingElement = document.querySelector('.book-list');
+    const existingElementBookList = document.querySelector('.book-list');
     const root = document.getElementById('root');
-    existingElement && root.removeChild(existingElement);
+    existingElementBookList && root.removeChild(existingElementBookList);
     bookList.length > 0 && searchField.value && root.insertAdjacentHTML('beforeend', BookList(bookList));
     
     const bookListHover = document.querySelectorAll('.book-list__item');
     bookListHover.forEach((item) => {
-    item.addEventListener('mouseover', (e) => {
-        console.log(e.target.id)
-        const book = getBook(e.target.id)
-        console.log(book);
-        const bookHover = `
-            <ul id="bookDetail" class="float-right box-border h-[27rem] w-64 border-4 rounded-md border-black bg-neutral-700 list-inside">
-                <li class="text-2xl font-semibold m-1">Title: ${book.title}</li>
-                <li class="m-2">Author: ${book.author}</li>
-                <li class="m-2">Pages: ${book.pages}</li>
-                <li class="m-2">Year: ${book.releaseDate}</li>
-                <img class="float-right max-w-[70%] m-2" src="####" alt="">
-                <p class="m-2">Cover: </p>
-            </ul>`;
-        item.insertAdjacentHTML('afterend', bookHover)
-    }
-    );
-    item.addEventListener('mouseout', hoverRemoveElement)});
+    console.log(item.innerHTML);
+    var innerHTML;
+    innerHTML = item.innerHTML;
+    item.addEventListener('mouseover', () => renderBookListPlusFetch(innerHTML));
+    item.addEventListener('mouseout', hoverRemoveElement());
+    });
 }
+async function getOneBook(id) {
+    const result = await fetch(url + "/" + id).then((result) => result.json());
+    return result;
+  }
+async function renderBookListPlusFetch(innerHTML) {
+    for (let i = 1; i <= bookList.length; i++) {
+      const book = await getOneBook(i);
+    if (innerHTML.toLowerCase().indexOf(book.author.toLowerCase()) >= 0){
+      let html;
+        html = BookInfo(book);
+        root.insertAdjacentHTML("afterend", html);
+        }
+    }
+}
+/* function hoverRemoveElement()
+{
+const existingElementBookDetails = document.getElementById('bookDetail');
+
+try {root.removeChild(existingElementBookDetails);}
+ catch {}
+
+}  */
+
+
 function hoverRemoveElement() {
-    const existingElement = document.getElementById('bookDetail');
-    existingElement.remove();
+    const box = document.getElementById("bookDetail");
+    box.remove();
 }
