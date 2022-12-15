@@ -26,7 +26,10 @@ function renderBookList(bookList) {
     var innerHTML;
     innerHTML = item.innerHTML;
     item.addEventListener('mouseover', () => renderBookListPlusFetch(innerHTML));
-    item.addEventListener('mouseout', hoverRemoveElement());
+    item.addEventListener('mouseout', () => {
+      const deleteElement = document.getElementById("bookDetail");
+      deleteElement && deleteElement.remove();
+    });
     });
 }
 async function getOneBook(id) {
@@ -53,7 +56,8 @@ try {root.removeChild(existingElementBookDetails);}
 }  */
 
 
-function hoverRemoveElement() {
-    const box = document.getElementById("bookDetail");
+/* function hoverRemoveElement() {
+    let box = document.getElementById("bookDetail");
+    console.log(box);
     box.remove();
-}
+} */
